@@ -1,0 +1,9 @@
+# Build outputs
+bin/
+*.exe
+*.o
+
+# OS / IDE files
+.vscode/*.code-workspace
+.DS_Store
+Thumbs.db
