@@ -1,5 +1,5 @@
 
-# Setup Guide for Element Fusion Game
+# Setup Guide for Card Game
 1️⃣ Install MSYS2
 
 Download and install: https://www.msys2.org/
