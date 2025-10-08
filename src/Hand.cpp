@@ -1,4 +1,5 @@
 #include "Hand.h"
+#include "Deck.h"
 
 Hand::Hand() {
   hand_size = 7;
@@ -11,15 +12,13 @@ Hand::Hand(int hand_size) {
 }
 
 Hand::~Hand() {
-  for (int i = 0; i < 52; i++) {
-    delete hand[i];
-  }
-  delete hand;
+  delete[] hand;
 }
 
 // Find which slots are empty, and replace the slots
-void Hand::draw(int* chosen_cards) {
-  for (int i = 0; i < (chosen_cards_size)) {
-    
+void Hand::replace(int* chosen_cards, int chosen_size, Deck &deck) {
+  for (int i = 0; i < chosen_size; i++) {
+    int index = chosen_cards[i] - 1; // assuming 1-based input
+    hand[index] = deck.draw();       // draw() should return a new Card
   }
 }

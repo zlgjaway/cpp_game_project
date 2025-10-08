@@ -6,6 +6,7 @@
 class Deck {
   private:
     int deck_size;
+    int cards_used;
     Card* deck;
   public:
     Deck();
@@ -16,6 +17,10 @@ class Deck {
 
     // Shuffle the Deck 
     void shuffle();
+
+    // Draw cards
+    Card Deck::draw(); 
+
 };
 
 #endif

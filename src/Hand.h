@@ -16,7 +16,7 @@ class Hand {
     ~Hand();
 
     // Find which slots are empty, and replace the slots
-    void draw(int* chosen_cards);
+    void replace(int* chosen_cards, int chosen_size, Deck &deck);
 
 };
 
