@@ -11,8 +11,8 @@ class Card {
     Card();
     Card(int rank, int element); 
 
-    int get_rank();
-    int get_element();
+    int get_rank() const;
+    int get_element() const;
 
     void set_rank(int rank);
     void set_element(int element);

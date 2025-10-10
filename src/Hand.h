@@ -18,6 +18,10 @@ class Hand {
     // Find which slots are empty, and replace the slots
     void replace(int* chosen_cards, int chosen_size, Deck &deck);
 
+    void sortByRank();
+
+    void sortByElement();
+
 };
 
 #endif

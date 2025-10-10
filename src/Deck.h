@@ -4,7 +4,7 @@
 #include "Card.h"
 
 class Deck {
-  private:
+  protected:
     int deck_size;
     int cards_used;
     Card* deck;

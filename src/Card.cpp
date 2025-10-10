@@ -10,11 +10,11 @@ Card::Card(int rank, int element) {
   this->element = element;
 }
 
-int Card::get_rank() {
+int Card::get_rank() const {
   return rank;
 }
 
-int Card::get_element() {
+int Card::get_element() const {
   return element;
 }
 

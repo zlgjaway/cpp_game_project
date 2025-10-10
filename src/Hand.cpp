@@ -1,6 +1,8 @@
 #include "Hand.h"
 #include "Deck.h"
 
+#include <algorithm> // for sort()
+
 Hand::Hand() {
   hand_size = 7;
   hand = new Card[hand_size];
@@ -18,7 +20,22 @@ Hand::~Hand() {
 // Find which slots are empty, and replace the slots
 void Hand::replace(int* chosen_cards, int chosen_size, Deck &deck) {
   for (int i = 0; i < chosen_size; i++) {
-    int index = chosen_cards[i] - 1; // assuming 1-based input
-    hand[index] = deck.draw();       // draw() should return a new Card
+    // Find the index of card chosen (in the hand)
+    int index = chosen_cards[i] - 1;
+
+    // Replace the "empty" slot
+    hand[index] = deck.draw();
   }
+}
+
+void Hand::sortByRank() {
+    std::sort(hand, hand + hand_size, [](const Card &a, const Card &b) {
+        return a.get_rank() < b.get_rank();
+    });
+}
+
+void Hand::sortByElement() {
+    std::sort(hand, hand + hand_size, [](const Card &a, const Card &b) {
+        return a.get_element() < b.get_element();
+    });
 }
