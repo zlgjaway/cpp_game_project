@@ -19,7 +19,7 @@ class Deck {
     void shuffle();
 
     // Draw cards
-    Card Deck::draw(); 
+    Card draw(); 
 
 };
 
