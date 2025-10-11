@@ -17,6 +17,11 @@ Hand::~Hand() {
   delete[] hand;
 }
 
+void Hand::fillFromDeck(Deck &deck) {
+  for (int i = 0; i < hand_size; i++)
+    hand[i] = deck.draw();
+}
+
 // Find which slots are empty, and replace the slots
 void Hand::replace(int* chosen_cards, int chosen_size, Deck deck) {
   for (int i = 0; i < chosen_size; i++) {
@@ -38,4 +43,8 @@ void Hand::sortByElement() {
     std::sort(hand, hand + hand_size, [](const Card &a, const Card &b) {
         return a.get_element() < b.get_element();
     });
+}
+
+Card Hand::get_card(int index) const {
+  return hand[index]; 
 }

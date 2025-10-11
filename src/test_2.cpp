@@ -4,35 +4,41 @@
 using namespace std;
 
 int main() {
-    // 1. Create and shuffle a deck
     Deck deck;
     deck.create();
     deck.shuffle();
     cout << "Deck created and shuffled.\n";
 
-    // 2. Create a hand and draw 7 cards
     Hand hand;
-    cout << "\nDrawing initial hand:\n";
-    for (int i = 0; i < 7; ++i) {
-        Card c = deck.draw();
-        cout << "Card " << i + 1 << ": Rank " << c.get_rank()
-             << ", Element " << c.get_element() << endl;
-    }
+    hand.fillFromDeck(deck);
 
-    // 3. Replace chosen cards (simulate user picking 2 cards)
+    cout << "\nInitial hand:\n";
+    for (int i = 0; i < 7; ++i)
+        cout << "Card " << i + 1 << ": Rank " << hand.get_card(i).get_rank()
+             << ", Element " << hand.get_card(i).get_element() << endl;
+
+    // simulate replacement of cards 2 and 5
     int chosen_cards[] = {2, 5};
     int chosen_size = 2;
     hand.replace(chosen_cards, chosen_size, deck);
-    cout << "\nReplaced cards 2 and 5 with new draws.\n";
 
-    // 4. Sort by rank
-    cout << "\nSorting hand by rank:\n";
+    cout << "\nAfter replacement:\n";
+    for (int i = 0; i < 7; ++i)
+        cout << "Card " << i + 1 << ": Rank " << hand.get_card(i).get_rank()
+             << ", Element " << hand.get_card(i).get_element() << endl;
+
+    cout << "\nSorting by rank:\n";
     hand.sortByRank();
+    for (int i = 0; i < 7; ++i)
+        cout << "Card " << i + 1 << ": Rank " << hand.get_card(i).get_rank()
+             << ", Element " << hand.get_card(i).get_element() << endl;
 
-    // 5. Sort by element
-    cout << "Sorting hand by element:\n";
+    cout << "\nSorting by element:\n";
     hand.sortByElement();
+    for (int i = 0; i < 7; ++i)
+        cout << "Card " << i + 1 << ": Rank " << hand.get_card(i).get_rank()
+             << ", Element " << hand.get_card(i).get_element() << endl;
 
-    cout << "\nAll tests executed successfully.\n";
+    cout << "\nAll tests completed.\n";
     return 0;
 }

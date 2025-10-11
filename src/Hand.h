@@ -16,12 +16,16 @@ class Hand {
     // Deconstructor
     ~Hand();
 
+    // Fill the Hand
+    void fillFromDeck(Deck &deck);
     // Find which slots are empty, and replace the slots
     void replace(int* chosen_cards, int chosen_size, Deck deck);
 
     void sortByRank();
 
     void sortByElement();
+
+    Card get_card(int index) const;
 
 };
 
