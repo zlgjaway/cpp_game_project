@@ -26,7 +26,7 @@ class Hand {
     void sortByElement();
 
     Card get_card(int index) const;
-
+    void set_card(int index, const Card& card);
 };
 
 #endif
