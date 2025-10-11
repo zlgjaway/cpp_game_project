@@ -48,3 +48,7 @@ void Hand::sortByElement() {
 Card Hand::get_card(int index) const {
   return hand[index]; 
 }
+
+void Hand::set_card(int index, const Card& card) {
+  hand[index] = card;
+}
