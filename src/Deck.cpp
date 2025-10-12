@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <random>
 using namespace std;
-
 #include "Deck.h"
 
 Deck::Deck() { 
@@ -20,9 +19,18 @@ Deck::~Deck() {
 // Create the all 52 cards
 void Deck::create() {
   int index = 0;
-  for (int set = 1; set < 5; set++) {
+  for (int set = 1; set < 5; set++) { // set fire = 1 / wind = 2 / earth = 3 / water = 4
     for (int card_rank = 2; card_rank < 15; card_rank++) {
-      deck[index] = Card(card_rank, set);
+      deck[index] = Card(card_rank, set); \
+
+      // Build the file path dynamically
+      std::string filepath = "../assets/Element deck/" +                           
+                            std::to_string(card_rank) + "-" +
+                            std::to_string(set) + ".png";
+
+      // Load the image
+      deck[index].loadModel(filepath);
+
       index++;
     }
   }
@@ -40,4 +48,17 @@ Card Deck::draw() {
     if (cards_used < deck_size)
         return deck[cards_used++];
     throw runtime_error("Deck empty");
+}
+
+
+Card& Deck::operator[](int index) {
+    if (index < 0 || index >= deck_size)
+        throw std::out_of_range("Deck index out of range");
+    return deck[index];
+}
+
+const Card& Deck::operator[](int index) const {
+    if (index < 0 || index >= deck_size)
+        throw std::out_of_range("Deck index out of range");
+    return deck[index];
 }
