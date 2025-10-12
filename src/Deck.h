@@ -20,6 +20,12 @@ class Deck {
 
     // Draw cards
     Card draw(); 
+    
+    //adding overloard and make deck an object array
+    Card& operator[](int index);
+    const Card& operator[](int index) const;
+    
+
 
 };
 

@@ -24,7 +24,7 @@ void Deck::create() {
       deck[index] = Card(card_rank, set); \
 
       // Build the file path dynamically
-      std::string filepath = "assets/Element deck/" +
+      std::string filepath = "../assets/Element deck/" +                           
                             std::to_string(card_rank) + "-" +
                             std::to_string(set) + ".png";
 
@@ -48,4 +48,17 @@ Card Deck::draw() {
     if (cards_used < deck_size)
         return deck[cards_used++];
     throw runtime_error("Deck empty");
+}
+
+
+Card& Deck::operator[](int index) {
+    if (index < 0 || index >= deck_size)
+        throw std::out_of_range("Deck index out of range");
+    return deck[index];
+}
+
+const Card& Deck::operator[](int index) const {
+    if (index < 0 || index >= deck_size)
+        throw std::out_of_range("Deck index out of range");
+    return deck[index];
 }
