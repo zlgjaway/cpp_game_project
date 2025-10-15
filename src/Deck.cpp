@@ -62,3 +62,13 @@ const Card& Deck::operator[](int index) const {
         throw std::out_of_range("Deck index out of range");
     return deck[index];
 }
+
+
+bool Deck::isEmpty() const {
+    return cards_used >= deck_size;
+}
+
+
+int Deck::size() const {
+    return deck_size - cards_used;
+}

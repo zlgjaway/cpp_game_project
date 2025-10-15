@@ -1,54 +1,46 @@
 #include "Hand.h"
-#include "Deck.h"
+#include <algorithm>
+#include <vector>
 
-#include <algorithm> // for sort()
-
-Hand::Hand() {
-  hand_size = 7;
-  hand = new Card[hand_size];
+void Hand::fillFromDeck(Deck& deck) {
+    while (cards.size() < 7 && !deck.isEmpty()) {
+        cards.push_back(deck.draw());
+    }
 }
 
-Hand::Hand(int hand_size) {
-  this->hand_size = hand_size;
-  hand = new Card[hand_size];
-}
-
-Hand::~Hand() {
-  delete[] hand;
-}
-
-void Hand::fillFromDeck(Deck &deck) {
-  for (int i = 0; i < hand_size; i++)
-    hand[i] = deck.draw();
-}
-
-// Find which slots are empty, and replace the slots
-void Hand::replace(int* chosen_cards, int chosen_size, Deck deck) {
-  for (int i = 0; i < chosen_size; i++) {
-    // Find the index of card chosen (in the hand)
-    int index = chosen_cards[i] - 1;
-
-    // Replace the "empty" slot
-    hand[index] = deck.draw();
-  }
+void Hand::removeCards(const std::vector<Card>& selected) {
+    for (const auto& card : selected) {
+        auto it = std::find(cards.begin(), cards.end(), card);
+        if (it != cards.end()) {
+            cards.erase(it);
+        }
+    }
 }
 
 void Hand::sortByRank() {
-    std::sort(hand, hand + hand_size, [](const Card &a, const Card &b) {
+    std::sort(cards.begin(), cards.end(),  {
         return a.get_rank() < b.get_rank();
     });
 }
 
 void Hand::sortByElement() {
-    std::sort(hand, hand + hand_size, [](const Card &a, const Card &b) {
+    std::sort(cards.begin(), cards.end(),  {
         return a.get_element() < b.get_element();
     });
 }
 
-Card Hand::get_card(int index) const {
-  return hand[index]; 
+void Hand::replace(int* chosen_cards, int chosen_size, Deck& deck) {
+    std::vector<Card> toRemove;
+    for (int i = 0; i < chosen_size; ++i) {
+        int index = chosen_cards[i];
+        if (index >= 0 && index < static_cast<int>(cards.size())) {
+            toRemove.push_back(cards[index]);
+        }
+    }
+    removeCards(toRemove);
+    fillFromDeck(deck);
 }
 
-void Hand::set_card(int index, const Card& card) {
-  hand[index] = card;
+const std::vector<Card>& Hand::getCards() const {
+    return cards;
 }

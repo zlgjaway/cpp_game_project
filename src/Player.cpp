@@ -1,7 +1,21 @@
 #include "Player.h"
+#include "Deck.h"
+#include "Hand.h"
+#include "Card.h"
 
 Player::Player(int hp, int maxHand)
-    : Character(hp), maxHandSize(maxHand), hand(nullptr) {}
+    : Character(hp) { 
+    // hand is now a member, no new allocation needed
+}
+void Player::drawCards(Deck& deck) {
+    if (hand == nullptr) return;
+    hand->fillFromDeck(deck);
+}
+
+void Player::selectCards(vector<Card> selected) {
+    // For now this can be a placeholder; GameController handles selection visually.
+    cout << "Player selected " << selected.size() << " cards.\n";
+}
 
 
 
@@ -10,3 +24,4 @@ void Player::takeDamage(int dmg) {
     if (health < 0) health = 0;
     cout << "Player takes " << dmg << " damage. HP now: " << health << endl;
 }
+

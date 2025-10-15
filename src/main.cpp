@@ -1,39 +1,25 @@
 #include <SFML/Graphics.hpp>
-#include "Deck.h"
+#include "GameController.h"
+#include <iostream>
+#include <exception>
+#include <csignal>
 
-int main()
-{
-    sf::RenderWindow window(sf::VideoMode(1000, 600), "SFML Card Deck");
+int main() {
+    std::set_terminate([]{
+        std::cerr << "FATAL: Unhandled exception (std::terminate called).\n";
+        std::_Exit(1);
+    });
 
-    Deck deck;
-    deck.create();
-    deck.shuffle();
-
-    // Position cards in a grid for demo
-    int x = 50, y = 50;
-    for (int i = 0; i < 52; ++i) {
-        deck[i].setPosition(x, y);
-        x += 80;
-        if (x > 900) { x = 50; y += 120; }
+    try {
+        GameController game;
+        game.startGame();
+        // If we ended due to win/lose, consider that success:
+        return 0;
+    } catch (const std::exception& ex) {
+        std::cerr << "FATAL exception: " << ex.what() << "\n";
+        return 1;
+    } catch (...) {
+        std::cerr << "FATAL: Unknown exception.\n";
+        return 1;
     }
-
-    while (window.isOpen())
-    {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
-
-        window.clear(sf::Color(30, 100, 30)); // green table
-
-        // Draw all cards
-        for (int i = 0; i < 52; ++i)
-            window.draw(deck[i].getSprite());
-
-        window.display();
-    }
-
-    return 0;
 }

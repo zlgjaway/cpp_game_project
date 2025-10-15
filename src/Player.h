@@ -8,22 +8,24 @@
 
 using namespace std;
 
-// Forward declarations
 class Deck;
 class Card;
 class Hand;
 
-// Player inherits from Character
 class Player : public Character {
 private:
-    Hand* hand;                // Pointer to player's hand (placeholder)
-    vector<string> sigils;     // Player's special abilities
-    int maxHandSize;           // Max number of cards
+    Hand* hand;
+    vector<string> sigils;
+    int maxHandSize;
+
 public:
     Player(int hp = 100, int maxHand = 7);
     void drawCards(Deck& deck);
     void selectCards(vector<Card> selected);
     void takeDamage(int dmg) override;
+
+    //Getter
+    Hand& getHand() { return *hand; }
 };
 
 #endif
