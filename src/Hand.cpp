@@ -23,10 +23,10 @@ void Hand::fillFromDeck(Deck &deck) {
 }
 
 // Find which slots are empty, and replace the slots
-void Hand::replace(int* chosen_cards, int chosen_size, Deck deck) {
+void Hand::replace(int* chosen_cards, int chosen_size, Deck &deck) {
   for (int i = 0; i < chosen_size; i++) {
     // Find the index of card chosen (in the hand)
-    int index = chosen_cards[i] - 1;
+    int index = chosen_cards[i];
 
     // Replace the "empty" slot
     hand[index] = deck.draw();
