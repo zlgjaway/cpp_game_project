@@ -1,4 +1,13 @@
 main.cpp - idk graphics ui part?
-test_1.cpp            -> Deck + Card (Successful)
-test_2.cpp            -> +Hand
-test_DamageCalculator -> Testing the Damage Calculator
+
+
+Card.h | Card.cpp
+Deck.h | Deck.cpp
+Hand.h | Hand.cpp
+DamageCalculator.h | DamageCalculator.cpp
+
+
+test_1.cpp              -> Deck + Card (Successful)
+test_2.cpp              -> +Hand
+test_DamageCalculator_1 -> Testing it with a random selection of cards
+test_DamageCalculator_2 -> Testing every unique scenario
