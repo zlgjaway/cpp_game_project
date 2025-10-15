@@ -1,13 +1,15 @@
 main.cpp - idk graphics ui part?
 
+------------------------------------------------------------------------
 
 Card.h | Card.cpp
 Deck.h | Deck.cpp
 Hand.h | Hand.cpp
 DamageCalculator.h | DamageCalculator.cpp
 
+------------------------------------------------------------------------
 
-test_1.cpp              -> Deck + Card (Successful)
-test_2.cpp              -> +Hand
+test_card_deck.cpp      -> Card + Deck (Successful)
+test_hand_card_deck.cpp -> +Hand
 test_DamageCalculator_1 -> Testing it with a random selection of cards
 test_DamageCalculator_2 -> Testing every unique scenario
