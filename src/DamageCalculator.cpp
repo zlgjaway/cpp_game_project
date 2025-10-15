@@ -17,7 +17,7 @@ int calculate_damage(const Hand& hand, const vector<int>& chosen_cards) {
   vector<int> elements;
 
   // Extract ranks and elements from Hand
-  for (int i = 1; i <= n; i++) {
+  for (int i = 0; i < n; i++) {
     Card c = hand.get_card(i);
     ranks.push_back(c.get_rank());
     elements.push_back(c.get_element());

@@ -19,7 +19,7 @@ int main() {
     }
 
     int chosen[] = {1, 2, 3, 4, 5};
-    int damage = dmg_calc(chosen, 5, player_hand);
+    int damage = calculate_damage(chosen, 5, player_hand);
     cout << "Total Damage: " << damage << endl;
 
     return 0;
