@@ -27,7 +27,7 @@ int main() {
     Card c = player_hand.get_card(i);
     cout << i + 1 << ". Rank: " << c.get_rank()
          << " | Element: " << c.get_element() << endl;
-}
+  }
 
   cout << "=== DAMAGE CALCULATOR TEST ===\n\n";
 
@@ -41,24 +41,24 @@ int main() {
 
   // ----------------- THREE CARDS -----------------
   cout << "[THREE CARD TESTS]\n";
-  cout << "All same (Triad Attack):\n";
+  cout << "All 3 cards same rank (Triad)\n";
   cout << damage_three_cards({3,3,3}) << "\n\n";
 
-  cout << "Two same (Duo Attack):\n";
+  cout << "Duo among 3 cards\n";
   cout << damage_three_cards({4,4,2}) << "\n\n";
 
-  cout << "All unique (Solo Attack):\n";
+  cout << "All different cards:\n";
   cout << damage_three_cards({1,2,3}) << "\n\n";
 
   // ----------------- FOUR CARDS -----------------
   cout << "[FOUR CARD TESTS]\n";
-  cout << "Four of a kind:\n";
+  cout << "Tetrad:\n";
   cout << damage_four_cards({7,7,7,7}) << "\n\n";
 
-  cout << "Two pairs:\n";
+  cout << "Duo SET:\n";
   cout << damage_four_cards({8,8,9,9}) << "\n\n";
 
-  cout << "Three of a kind + one other:\n";
+  cout << "Triad + among 5 cards\n";
   cout << damage_four_cards({10,10,10,5}) << "\n\n";
 
   // ----------------- FIVE CARDS -----------------
@@ -75,20 +75,22 @@ int main() {
   cout << "Sequential only (March Attack):\n";
   cout << damage_five_cards({4,5,6,7,8}, {1,2,3,4,1}) << "\n\n";
 
-  cout << "Full House (3 + 2):\n";
+  cout << "Grand Warhost (Triad + Duo):\n";
   cout << damage_five_cards({9,9,9,10,10}, {1,2,3,1,2}) << "\n\n";
 
-  cout << "Four of a kind:\n";
+  cout << "Tetrad among 5 cards:\n";
   cout << damage_five_cards({11,11,11,11,3}, {2,3,1,4,2}) << "\n\n";
 
-  cout << "Three of a kind:\n";
+  cout << "Triad among 5 cards:\n";
   cout << damage_five_cards({8,8,8,4,2}, {1,2,3,4,1}) << "\n\n";
 
-  cout << "Two of a kind:\n";
+  cout << "Duo among 5 cards:\n";
   cout << damage_five_cards({5,5,1,3,9}, {4,2,3,1,3}) << "\n\n";
 
-  cout << "All different:\n";
+  cout << "Everything is Different:\n";
   cout << damage_five_cards({2,4,6,8,10}, {1,2,3,4,2}) << "\n\n";
 
+
+  
   return 0;
 }
