@@ -90,7 +90,7 @@ void GameController::startGame() {
 void GameController::playerTurn() {
     std::vector<int> selectedIndices;
 
-    // Collect selected cards (0-based indices ✅)
+    // Collect selected cards
     for (int i = 0; i < player.getHand().getSize(); ++i) {
         auto& card = player.getHand().get_card(i);
         if (card.selected) {
