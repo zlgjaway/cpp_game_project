@@ -1,0 +1,4 @@
+main.cpp - idk graphics ui part?
+test_1.cpp            -> Deck + Card (Successful)
+test_2.cpp            -> +Hand
+test_DamageCalculator -> Testing the Damage Calculator

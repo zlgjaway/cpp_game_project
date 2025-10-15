@@ -34,6 +34,9 @@ int calculate_damage(const Hand& hand, const vector<int>& chosen_cards) {
     case 3: return damage_three_cards(ranks);
     case 2: return damage_two_cards(ranks);
     case 1: return 10; 
+    default:
+        cerr << "Invalid number of chosen cards: " << n << endl;
+        return 0;
   }
 }
 
