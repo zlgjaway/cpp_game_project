@@ -18,8 +18,8 @@ int main() {
              << ", Element: " << player_hand.get_card(i).get_element() << endl;
     }
 
-    int chosen[] = {1, 2, 3, 4, 5};
-    int damage = dmg_calc(chosen, 5, player_hand);
+    std::vector<int> chosen = {0, 1, 2, 3, 4}; 
+    int damage = calculate_damage(player_hand, chosen);
     cout << "Total Damage: " << damage << endl;
 
     return 0;

@@ -17,7 +17,7 @@ int calculate_damage(const Hand& hand, const vector<int>& chosen_cards) {
   vector<int> elements;
 
   // Extract ranks and elements from Hand
-  for (int i = 1; i <= n; i++) {
+  for (int i = 0; i < n; i++) {
     Card c = hand.get_card(i);
     ranks.push_back(c.get_rank());
     elements.push_back(c.get_element());
@@ -34,6 +34,9 @@ int calculate_damage(const Hand& hand, const vector<int>& chosen_cards) {
     case 3: return damage_three_cards(ranks);
     case 2: return damage_two_cards(ranks);
     case 1: return 10; 
+    default:
+        cerr << "Invalid number of chosen cards: " << n << endl;
+        return 0;
   }
 }
 
@@ -58,19 +61,25 @@ int damage_three_cards(const vector<int>& ranks) {
   // [1, 2, 2]  ->  1 and 2 stored
   unordered_map<int, int> freq;
 
-  // Going through every rank(r), in the container ranks
-  for (int r : ranks) freq[r]++;
+  // Going through every rank(r) 
+  for (size_t i = 0; i < ranks.size(); i++) {
+    freq[ranks[i]]++;
+  }
+  // i is your loop index, starting from 0
+  // ranks.size() gives the number of elements in the ranks vector
+  // Loop continues until i reaches ranks.size()
+  // size_t is used because vector::size() returns a size_t, so this avoids signed/unsigned comparison warnings
   
   // all cards have the same rank, only 1 unique-ranked card stored
   if (freq.size() == 1) {
-      cout << "Triad Attack! 40 Damage Dealt.\n";
-      return 40;
+    cout << "Triad Attack! 40 Damage Dealt.\n";
+    return 40;
   } 
 
   // There are 2 unique-ranked cards, only 2 of the 3 cards have similar rank
   if (freq.size() == 2) {
-      cout << "Duo Attack! 20 Damage Dealt.\n";
-      return 20;
+    cout << "Duo Attack! 20 Damage Dealt.\n";
+    return 20;
   }
 
   // all 3 unique cards, no damage
@@ -81,108 +90,154 @@ int damage_three_cards(const vector<int>& ranks) {
 
 // FOUR CARD SCENARIO
 int damage_four_cards(const vector<int>& ranks) {
-    unordered_map<int, int> freq;
-    for (int r : ranks) freq[r]++;
+  unordered_map<int, int> freq;
+  for (size_t i = 0; i < ranks.size(); i++) {
+    freq[ranks[i]]++;
+  }
 
-    if (freq.size() == 1) {
-        cout << "Tetrad Attack! 400 Damage Dealt.\n";
-        return 400;
+  // There is only a frequency of a single number out of the 4 cards (which means they all have the same number)
+  if (freq.size() == 1) {
+      cout << "Tetrad Attack! 400 Damage Dealt.\n";
+      return 400;
+  }
+
+  if (freq.size() == 2) {
+    bool hasThree = false;
+
+    // Checking if there’s any rank that appears exactly 3 times
+    for (const auto& kv : freq) {
+      if (kv.second == 3) {
+        hasThree = true;
+      }
     }
-    if (freq.size() == 2) {
-        bool hasThree = false;
-        if (hasThree) {
-            cout << "Triad Attack! 80 Damage Dealt.\n";
-            return 80;
-        }
-        cout << "Duo Set! 40 Damage Dealt.\n";
-        return 40;
+    // Loops through each key-value pair in the map
+    // kv.first → the key (the rank number)
+    // kv.second → the value (the count/frequency of that rank)
+  
+    // auto -> automatically deduces the type (pair<const int, int>)
+    // & -> avoids copying the pair (better performance)
+    // const -> means no modifying the map entry
+
+    if (hasThree) {
+        cout << "Triad Attack! 80 Damage Dealt.\n";
+        return 80;
     }
-    if (freq.size() == 3) {
-        cout << "Duo Attack! 20 Damage Dealt.\n";
-        return 20;
-    }
-    cout << "Solo Attack! 10 Damage Dealt.\n";
-    return 10;
+    cout << "Duo Set! 40 Damage Dealt.\n";
+    return 40;
+  }
+
+  if (freq.size() == 3) {
+      cout << "Duo Attack! 20 Damage Dealt.\n";
+      return 20;
+  }
+
+  cout << "Solo Attack! 10 Damage Dealt.\n";
+  return 10;
 }
 
 
 // FIVE CARD SCENARIO
 int damage_five_cards(const vector<int>& ranks, const vector<int>& elements) {
-    unordered_map<int, int> rankFreq;
-    unordered_map<int, int> elemFreq;
+  unordered_map<int, int> rankFreq;
+  unordered_map<int, int> elemFreq;
 
-    for (int r : ranks) rankFreq[r]++;
-    for (int e : elements) elemFreq[e]++;
+  for (int i = 0 ; i < ranks.size(); i++) {
+    rankFreq[i];
+  }
 
-    // Check if all elements are the same
-    bool allSameElem = any_of(elemFreq.begin(), elemFreq.end(), [](auto& kv){ return kv.second == 5; });
+  for (int i = 0; i < elements.size(); i++) {
+    elemFreq[i]++;
+  }
 
-    vector<int> sortedRanks = ranks;
+  // Check if all elements are the same
+  bool allSameElem = false;
+  for (const auto& kv : elemFreq) {
+    int rank = kv.first;
+    int count = kv.second;
 
-    // Sort Ranks
-    sort(sortedRanks.begin(), sortedRanks.end());
-    bool sequential = true;
-    for (size_t i = 1; i < sortedRanks.size(); i++)
-        // check for Sequence (If-Statement)
-        if (sortedRanks[i] != sortedRanks[i-1] + 1)
-            sequential = false;
-
-    // If All Same Element + In-Sequence + Specific Ranks (10 to 14)
-    if (allSameElem) {
-        if (sequential && sortedRanks == vector<int>({10,11,12,13,14})) {
-            cout << "Demon's Hand! 2000 Damage Dealt.\n";
-            return 2000;
-        }
-        // If All Same Elements + In-Sequence
-        if (sequential) {
-            cout << "Marching Horde! 600 Damage Dealt.\n";
-            return 600;
-        }
-        // Only all elements condition met
-        cout << "Horde Attack! 125 Damage Dealt.\n";
-        return 125;
+    if (count == 5) {
+      allSameElem = true;
+      break;
     }
+  }
+  // looping through the elemFreq table
+  // then checking to see whether the second index (number of times a number show up) is == 5
+  // which means it checking whether the no. of times the element appear IS 5
 
-    // If only Sequential condition met
+  // Sort Ranks
+  vector<int> sortedRanks = ranks;
+  sort(sortedRanks.begin(), sortedRanks.end());
+
+  bool sequential = true; // DEFAULT: sequence is true 
+  // Check to see if sequence condition is met
+  for (size_t i = 1; i < sortedRanks.size(); i++) {
+    if (sortedRanks[i] != sortedRanks[i-1] + 1) {
+      sequential = false;
+      break;
+    }
+  }
+  
+
+  // If All Same Element + In-Sequence + Specific Ranks (10 to 14)
+  if (allSameElem) {
+    if (sequential && sortedRanks == vector<int>({10,11,12,13,14})) {
+        cout << "Demon's Hand! 2000 Damage Dealt.\n";
+        return 2000;
+    }
     if (sequential) {
-        cout << "March Attack! 100 Damage Dealt.\n";
-        return 100;
+        cout << "Marching Horde! 600 Damage Dealt.\n";
+        return 600;
     }
+    cout << "Horde Attack! 125 Damage Dealt.\n";
+    return 125;
+  }
 
-    // Check rank combos (As usual the rank matches only)
-    bool hasThree = false, hasTwo = false;
-    // if there is 3 counts(c) of the number(r) hasThree = true;
-    // auto& -> deduce type as pair<const int, int>&
-    // [r, c] -> structured binding that unpacks the pair into r and c
-    for (auto& [r, c] : rankFreq) {
-        if (c == 3) hasThree = true;
-        if (c == 2) hasTwo = true;
-    }
+  // If only Sequential condition met
+  if (sequential) {
+    cout << "March Attack! 100 Damage Dealt.\n";
+    return 100;
+  }
 
-    // Special condition: a triad (3 cards of the rank) and a duo
-    if (hasThree && hasTwo) {
-        cout << "Grand Warhost! 200 Damage Dealt.\n";
-        return 200;
-    }
-    if (hasFour(rankFreq)) {
-        cout << "Tetrad Attack! 400 Damage Dealt.\n";
-        return 400;
-    }
-    if (hasThree) {
-        cout << "Triad Attack! 80 Damage Dealt.\n";
-        return 80;
-    }
-    if (hasTwo) {
-        cout << "Duo Attack! 20 Damage Dealt.\n";
-        return 20;
-    }
+  // Check rank combos (As usual the rank matches only)
+  bool hasThree = false, hasTwo = false;
+  // if there is 3 counts(c) of the number(r) hasThree = true;
+  for (const auto& kv : rankFreq) {
+    int c = kv.second;
+    if (c == 3) hasThree = true;
+    if (c == 2) hasTwo = true;
+  }
 
-    cout << "Solo Attack! 10 Damage Dealt.\n";
-    return 10;
+  // Special condition: a triad (3 cards of the rank) and a duo
+  if (hasThree && hasTwo) {
+    cout << "Grand Warhost! 200 Damage Dealt.\n";
+    return 200;
+  }
+
+  if (hasFour(rankFreq)) {
+    cout << "Tetrad Attack! 400 Damage Dealt.\n";
+    return 400;
+  }
+
+  if (hasThree) {
+    cout << "Triad Attack! 80 Damage Dealt.\n";
+    return 80;
+  }
+
+  if (hasTwo) {
+    cout << "Duo Attack! 20 Damage Dealt.\n";
+    return 20;
+  }
+
+  cout << "Solo Attack! 10 Damage Dealt.\n";
+  return 10;
 }
 
+
+// This Function is used in damage_five_cards
 // Find a Tetread (4 cards of the same rank)
 bool hasFour(const unordered_map<int,int>& freq) {
-    for (auto& [r, c] : freq) if (c == 4) return true;
-    return false;
+  for (const auto& kv : freq) {
+    if (kv.second == 4) return true;
+  }
+  return false;
 }
