@@ -18,14 +18,22 @@ void GameController::repositionHand() {
 
 void GameController::startGame() {
     // Build deck & initial hand
+    
     deck.create();
+    std::cout << "[GameController] Deck created.\n";
+
+    std::cout << "[GameController] Shuffling deck...\n";
     deck.shuffle();
+    std::cout << "[GameController] Deck shuffled.\n";
 
-    // Fill player's hand with 7 cards
+    std::cout << "[GameController] Filling player's hand...\n";
     player.getHand().fillFromDeck(deck);
+    std::cout << "[GameController] Hand filled.\n";
 
-    // Initial positioning
+    std::cout << "[GameController] Repositioning hand...\n";
     repositionHand();
+    std::cout << "[GameController] Hand repositioned.\n";
+
 
     // Main loop
     while (window.isOpen() && !gameOver) {
@@ -90,7 +98,7 @@ void GameController::startGame() {
 void GameController::playerTurn() {
     std::vector<int> selectedIndices;
 
-    // Collect selected cards (0-based indices ✅)
+    // Collect selected cards (0-based indice)
     for (int i = 0; i < player.getHand().getSize(); ++i) {
         auto& card = player.getHand().get_card(i);
         if (card.selected) {

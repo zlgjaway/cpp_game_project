@@ -3,10 +3,13 @@
 #include "Hand.h"
 #include "Card.h"
 
+
 Player::Player(int hp, int maxHand)
-    : Character(hp) { 
-    // hand is now a member, no new allocation needed
+    : Character(hp) {
+    hand = new Hand(maxHand); // or use default: new Hand()
+    std::cout << "[Player] Hand initialized with size " << maxHand << "\n";
 }
+
 void Player::drawCards(Deck& deck) {
     if (hand == nullptr) return;
     hand->fillFromDeck(deck);
@@ -25,3 +28,7 @@ void Player::takeDamage(int dmg) {
     cout << "Player takes " << dmg << " damage. HP now: " << health << endl;
 }
 
+
+Player::~Player() {
+    delete hand;
+}

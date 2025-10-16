@@ -27,6 +27,8 @@ class Hand {
 
     Card get_card(int index) const;
     void set_card(int index, const Card& card);
+    int getSize() const;
+    Card& get_card(int index);
 };
 
 #endif

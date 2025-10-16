@@ -1,5 +1,5 @@
 #include "Card.h"
-
+#include "iostream"
 Card::Card() : rank(0), element(0), selected(false) {}
 
 Card::Card(int rank, int element) 
@@ -11,11 +11,17 @@ int Card::get_element() const { return element; }
 void Card::set_rank(int rank) { this->rank = rank; }
 void Card::set_element(int element) { this->element = element; }
 
+
 bool Card::loadModel(const std::string &filepath) {
-    if (!texture.loadFromFile(filepath)) return false;
+    if (!texture.loadFromFile(filepath)) {
+        std::cerr << "[Card] ERROR: Failed to load texture from " << filepath << "\n";
+        return false;
+    }
     sprite.setTexture(texture);
+    std::cout << "[Card] Loaded texture from " << filepath << "\n";
     return true;
 }
+
 
 sf::Sprite& Card::getSprite() { return sprite; }
 
@@ -32,4 +38,8 @@ void Card::setSelected(bool s) {
 
 bool Card::operator==(const Card& other) const {
     return rank == other.rank && element == other.element;
+}
+
+const sf::Sprite& Card::getSprite() const {
+    return sprite;
 }

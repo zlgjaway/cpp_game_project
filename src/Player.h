@@ -23,7 +23,7 @@ public:
     void drawCards(Deck& deck);
     void selectCards(vector<Card> selected);
     void takeDamage(int dmg) override;
-
+    ~Player();
     //Getter
     Hand& getHand() { return *hand; }
 };

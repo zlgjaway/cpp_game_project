@@ -26,7 +26,7 @@ class Card {
     sf::Sprite& getSprite();
     void setPosition(float x, float y);
     sf::Vector2f getPosition() const;
-
+    const sf::Sprite& getSprite() const;
     void setSelected(bool s); // optional helper
     bool operator==(const Card& other) const;
 };
