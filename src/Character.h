@@ -1,17 +1,15 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
-#include "Damageable.h"
-
-// Abstract base class for any character with health
-class Character : public Damageable {
+class Character {
 protected:
-    int health; // Shared health attribute
+    int health;
 public:
     Character(int hp);
-    int getHealth() const;
-    virtual void takeDamage(int dmg) = 0; // Still abstract
     virtual ~Character();
+
+    virtual void takeDamage(int dmg) = 0;
+    int getHealth() const;
 };
 
 #endif

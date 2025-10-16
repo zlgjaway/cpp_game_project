@@ -25,7 +25,8 @@ class Deck {
     Card& operator[](int index);
     const Card& operator[](int index) const;
     
-
+    bool isEmpty() const;   
+    int size() const;       
 
 };
 
