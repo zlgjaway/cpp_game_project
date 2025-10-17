@@ -10,6 +10,16 @@ void Boss::takeDamage(int dmg) {
     std::cout << "Boss takes " << dmg << " damage! HP left: " << health << "\n";
 }
 
+bool Boss::load_model(const std::string &filepath){
+    if (!texture.loadFromFile(filepath)) {
+        std::cerr << "[Card] ERROR: Failed to load texture from " << filepath << "\n";
+        return false;
+    }
+    sprite.setTexture(texture);
+    std::cout << "[Card] Loaded texture from " << filepath << "\n";
+    return true;
+}
+
 void Boss::deal_boss_damage(Player& p) {
     turnCounter++;
     std::cout << "Boss attacks for " << baseDamage << " damage!\n";
@@ -26,3 +36,11 @@ void Boss::specialAbility(Player& p) {
     // Default: extra damage
     p.takeDamage(baseDamage / 2);
 }
+
+
+void Boss::create() {
+    // Default boss has no sprite
+}
+
+void Boss::setPosition(float x, float y) { sprite.setPosition(x, y); }
+sf::Vector2f Boss::getPosition() const { return sprite.getPosition(); }

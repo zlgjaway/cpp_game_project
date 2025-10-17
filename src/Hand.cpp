@@ -16,10 +16,6 @@ Hand::Hand(int hand_size) {
   hand = new Card[hand_size];
 }
 
-
-
-
-
 void Hand::fillFromDeck(Deck &deck) {
     std::cout << "[Hand] fillFromDeck() called. Hand size: " << hand_size << "\n";
     for (int i = 0; i < hand_size; i++) {

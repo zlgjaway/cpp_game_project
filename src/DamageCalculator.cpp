@@ -17,11 +17,13 @@ int calculate_damage(const Hand& hand, const vector<int>& chosen_cards) {
   vector<int> elements;
 
   // Extract ranks and elements from Hand
-  for (int i = 0; i < n; i++) {
-    Card c = hand.get_card(i);
+  
+for (int i = 0; i < n; i++) {
+    Card c = hand.get_card(chosen_cards[i]); // use chosen_cards[i]
     ranks.push_back(c.get_rank());
     elements.push_back(c.get_element());
-  }
+}
+
 
   // Find the right card-checker function to use
   switch (n) {
@@ -141,12 +143,13 @@ int damage_five_cards(const vector<int>& ranks, const vector<int>& elements) {
   unordered_map<int, int> rankFreq;
   unordered_map<int, int> elemFreq;
 
+
   for (int i = 0 ; i < ranks.size(); i++) {
-    rankFreq[i];
+      rankFreq[ranks[i]]++;
   }
 
   for (int i = 0; i < elements.size(); i++) {
-    elemFreq[i]++;
+    elemFreq[elements[i]]++;
   }
 
   // Check if all elements are the same
