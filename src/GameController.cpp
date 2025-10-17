@@ -2,6 +2,10 @@
 #include <algorithm>
 #include <iostream>
 #include <stdexcept>
+#include <functional>
+#include "Button.h"
+#include <functional>
+
 
 GameController::GameController()
     : window(sf::VideoMode(1000, 600), "SFML Card Battle"),
@@ -9,23 +13,45 @@ GameController::GameController()
       gameOver(false) {}
 
 void GameController::repositionHand() {
-    int x = 60, y = 420; // baseline row
+    int x = 60, y = 380; // baseline row
     for (int i = 0; i < player.getHand().getSize(); ++i) {
         player.getHand().get_card(i).setPosition(x, y);
         x += 130;
     }
 }
+void GameController::onSortElement() {
+        std::cout << "[UI] Sort by Element\n";
+        player.getHand().sortByElement();
+        repositionHand();
+}
+
+void GameController::onSortRank() {
+        std::cout << "[UI] Sort by Rank\n";
+        player.getHand().sortByRank();
+        repositionHand();
+}
+
+void GameController::onPlayClicked() {
+        std::cout << "[UI] Play Selected\n";
+        playerTurn();
+        checkVictoryConditions();
+        if (!gameOver) {
+            bossTurn();
+            checkVictoryConditions();
+        }
+}
 
 void GameController::startGame() {
-    // Build deck & initial hand
-    
+    initUI();  //set up UI buttons
+
+
     deck.create();
     std::cout << "[GameController] Deck created.\n";
 
     std::cout << "[GameController] Shuffling deck...\n";
     deck.shuffle();
     std::cout << "[GameController] Deck shuffled.\n";
-
+    boss.create(); // Load boss sprite
     std::cout << "[GameController] Filling player's hand...\n";
     player.getHand().fillFromDeck(deck);
     std::cout << "[GameController] Hand filled.\n";
@@ -33,7 +59,6 @@ void GameController::startGame() {
     std::cout << "[GameController] Repositioning hand...\n";
     repositionHand();
     std::cout << "[GameController] Hand repositioned.\n";
-
 
     // Main loop
     while (window.isOpen() && !gameOver) {
@@ -46,15 +71,28 @@ void GameController::startGame() {
             // Mouse click: select/deselect cards
             if (event.type == sf::Event::MouseButtonPressed &&
                 event.mouseButton.button == sf::Mouse::Left) {
+                
+                
+                sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
 
-                // Use SFML mapping (works with views/zoom)
-                const auto mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+                // Check if any button was clicked
+                if (btnSortElement.box.getGlobalBounds().contains(mousePos)) {
+                        btnSortElement.onClick();
+                }
+                if (btnSortRank.box.getGlobalBounds().contains(mousePos)) {
+                        btnSortRank.onClick();
+                }
+                if (btnPlay.box.getGlobalBounds().contains(mousePos)) {
+                        btnPlay.onClick();
+                }
+
+
+                //const auto mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
 
                 for (int i = 0; i < player.getHand().getSize(); ++i) {
                     auto& card = player.getHand().get_card(i);
                     if (card.getSprite().getGlobalBounds().contains(mousePos)) {
                         card.selected = !card.selected;
-                        // Simple visual feedback: lift/drop by 30 px
                         if (card.selected) {
                             card.setPosition(card.getPosition().x, card.getPosition().y - 30);
                         } else {
@@ -85,9 +123,16 @@ void GameController::startGame() {
             window.draw(player.getHand().get_card(i).getSprite());
         }
 
+        // Draw the boss
+        window.draw(boss.getSprite());
+        
+        // Draw UI on top
+        btnSortElement.draw(window);
+        btnSortRank.draw(window);
+        btnPlay.draw(window);
+
         window.display();
 
-        // If game ended during drawing, close gracefully after a short delay
         if (gameOver) {
             sf::sleep(sf::milliseconds(600));
             window.close();
@@ -98,12 +143,11 @@ void GameController::startGame() {
 void GameController::playerTurn() {
     std::vector<int> selectedIndices;
 
-    // Collect selected cards (0-based indice)
     for (int i = 0; i < player.getHand().getSize(); ++i) {
         auto& card = player.getHand().get_card(i);
         if (card.selected) {
             selectedIndices.push_back(i);
-            card.selected = false; // clear selection flag
+            card.selected = false;
         }
     }
 
@@ -112,30 +156,24 @@ void GameController::playerTurn() {
         return;
     }
 
-    // De-dup and sort (defensive)
     std::sort(selectedIndices.begin(), selectedIndices.end());
-    selectedIndices.erase(std::unique(selectedIndices.begin(),
-                                      selectedIndices.end()),
-                          selectedIndices.end());
+    selectedIndices.erase(std::unique(selectedIndices.begin(), selectedIndices.end()), selectedIndices.end());
 
-    // Validate indices
     const int handSize = player.getHand().getSize();
     for (int idx : selectedIndices) {
         if (idx < 0 || idx >= handSize) {
             std::cerr << "ERROR: Selected index out of range: " << idx
                       << " (hand size=" << handSize << ")\n";
-            gameOver = true; // bail to avoid UB
+            gameOver = true;
             return;
         }
     }
 
-    // Simple damage rule
     ++turnCounter;
     std::cout << "\n[Turn " << turnCounter << "] Player played "
               << selectedIndices.size() << " card(s).\n";
     boss.takeDamage(static_cast<int>(selectedIndices.size()) * 10);
 
-    // Replace selected cards from deck
     try {
         player.getHand().replace(selectedIndices.data(),
                                  static_cast<int>(selectedIndices.size()),
@@ -150,14 +188,11 @@ void GameController::playerTurn() {
         return;
     }
 
-    // Reposition current hand row
     repositionHand();
 }
 
 void GameController::bossTurn() {
-    const int damage = 10;
-    std::cout << "Boss attacks for " << damage << " damage!\n";
-    player.takeDamage(damage);
+    boss.deal_boss_damage(player); // Use Orge's custom attack
 }
 
 void GameController::checkVictoryConditions() {
@@ -169,3 +204,45 @@ void GameController::checkVictoryConditions() {
         gameOver = true;
     }
 }
+
+
+void GameController::updateButtonLayout() {
+    const float W = static_cast<float>(window.getSize().x);
+    const float H = static_cast<float>(window.getSize().y);
+
+    // Use compact UI button size
+    const sf::Vector2f size{180.f, 40.f};
+    const float margin = 16.f;
+
+    // Bottom-left, bottom-middle, bottom-right
+    sf::Vector2f posElement{margin, H - size.y - margin};
+    sf::Vector2f posRank{posElement.x + size.x + margin, posElement.y};
+    sf::Vector2f posPlay{W - size.x - margin, H - size.y - margin};
+
+    btnSortElement.setup(uiFont, "Sort by Element", posElement, size);
+    btnSortRank.setup(uiFont,    "Sort by Rank",    posRank,    size);
+    btnPlay.setup(uiFont,        "Play Selected",   posPlay,    size);
+
+}
+
+
+void GameController::initUI() {
+    if (!uiFont.loadFromFile("../assets/fonts/Roboto-Regular.ttf")) {
+        std::cerr << "[UI] Failed to load font at assets/fonts/Roboto-Regular.ttf\n";
+    }
+
+    updateButtonLayout();
+
+    // Bind member functions to the button onClick handlers (C++11)
+    btnSortElement.onClick = std::bind(&GameController::onSortElement, this);
+    btnSortRank.onClick    = std::bind(&GameController::onSortRank, this);
+    btnPlay.onClick        = std::bind(&GameController::onPlayClicked, this);
+
+    
+    // After setup() in initUI() or updateButtonLayout():
+    btnSortElement.box.setFillColor(sf::Color(70, 130, 180)); // SteelBlue
+    btnSortRank.box.setFillColor(sf::Color(46, 139, 87));     // SeaGreen
+    btnPlay.box.setFillColor(sf::Color(218, 165, 32));        // Goldenrod
+
+}
+
