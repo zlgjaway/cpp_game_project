@@ -1,7 +1,7 @@
 #include "Orge.h"
 #include <iostream>
 
-Orge::Orge() : Boss(150, 20, 3) {
+Orge::Orge() : Boss(150, 20, 3, 2) {
     std::cout << "[Orge] Created with 150 HP, 20 base damage, special every 3 turns.\n";
 }
 
@@ -25,13 +25,20 @@ void Orge::create() {
 
 
 void Orge::deal_boss_damage(Player& p) {
-    turnCounter++;
-    std::cout << "[Orge] Swings a massive hand for " << baseDamage + 5 << " damage!\n";
-    p.takeDamage(baseDamage + 5);
 
-    if (turnCounter % attackInterval == 0) {
-        specialAbility(p);
+        if (turnCounter % attackInterval == 0 && turnCounter >= attackInterval) {
+            if (NoramlAttackCount % SpeicalAttackIterval ==0 && NoramlAttackCount >= SpeicalAttackIterval)
+            {   
+                std::cout << "[Orge] Swings a massive hand for " << baseDamage + 5 << " damage!\n";
+                specialAbility(p);
+            }
+            else{
+                std::cout << "Boss attacks for " << baseDamage << " damage!\n";
+                p.takeDamage(baseDamage);
+                NoramlAttackCount ++;
+            }
     }
+    turnCounter++;
 }
 
 void Orge::specialAbility(Player& p) {

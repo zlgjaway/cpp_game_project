@@ -10,12 +10,14 @@ class Boss : public Character {
 protected:
     int baseDamage;
     int attackInterval;
+    int SpeicalAttackIterval;
     int turnCounter;
+    int NoramlAttackCount;
     sf::Texture texture;
     sf::Sprite sprite;
 
 public:
-    Boss(int hp = 100, int baseDmg = 10, int interval = 2);
+    Boss(int hp = 100, int baseDmg = 10, int interval_S = 2, int interval_m = 3);  // s for spiecal attack and m for normal attack
     virtual ~Boss() = default;
 
     virtual void takeDamage(int dmg) override;
