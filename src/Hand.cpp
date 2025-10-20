@@ -21,8 +21,10 @@ void Hand::fillFromDeck(Deck &deck) {
     for (int i = 0; i < hand_size; i++) {
         std::cout << "[Hand] Drawing card " << i << "\n";
         hand[i] = deck.draw(); // likely crash point
+        hand[i].refreshSprite(); // ensure sprite matches sorted card
         std::cout << "[Hand] Card " << i << " assigned.\n";
     }
+    
     std::cout << "[Hand] fillFromDeck() finished.\n";
 }
 

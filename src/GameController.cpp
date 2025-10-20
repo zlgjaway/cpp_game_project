@@ -45,6 +45,18 @@ void GameController::onPlayClicked() {
 }
 
 void GameController::startGame() {
+    // Show game menu to select boss
+    GameMenu menu(window);
+    int bossChoice = menu.show();
+    if (bossChoice == -1) return;
+
+    switch (bossChoice) {
+        case 1: boss = Orge(); break;
+        //case 2: boss = Dragon(); break;
+        //case 3: boss = Demon(); break;
+        default: boss = Orge(); break;
+    }
+
     initUI();
 
     deck.create();
@@ -83,7 +95,6 @@ void GameController::startGame() {
                     btnPlay.onClick();
                 }
 
-                // Limit selection to 5 cards
                 int selectedCount = 0;
                 for (int i = 0; i < player.getHand().getSize(); ++i) {
                     if (player.getHand().get_card(i).selected) {
@@ -116,7 +127,7 @@ void GameController::startGame() {
             }
         }
 
-        window.clear(sf::Color(0, 150, 0));
+       window.clear(sf::Color(25, 25, 112)); // Midnight Blue
 
         for (int i = 0; i < player.getHand().getSize(); ++i) {
             window.draw(player.getHand().get_card(i).getSprite());
@@ -127,6 +138,23 @@ void GameController::startGame() {
         btnSortElement.draw(window);
         btnSortRank.draw(window);
         btnPlay.draw(window);
+
+        sf::Text bossHealthText;
+        bossHealthText.setFont(uiFont);
+        bossHealthText.setCharacterSize(24);
+        bossHealthText.setFillColor(sf::Color::Red);
+        bossHealthText.setPosition(20, 20);
+        bossHealthText.setString("Boss HP: " + std::to_string(boss.getHealth()));
+        
+        sf::Text playerHealthText;
+        playerHealthText.setFont(uiFont);
+        playerHealthText.setCharacterSize(24);
+        playerHealthText.setFillColor(sf::Color::White);
+        playerHealthText.setPosition(20, 50);
+        playerHealthText.setString("Player HP: " + std::to_string(player.getHealth()));
+
+        window.draw(bossHealthText);
+        window.draw(playerHealthText);
 
         window.display();
 
