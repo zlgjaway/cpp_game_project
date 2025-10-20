@@ -9,7 +9,7 @@
 #include "Orge.h"
 #include "Button.h"
 #include "DamageCalculator.h"
-
+#include "GameMenu.h"
 class GameController {
 public:
     GameController();

@@ -2,7 +2,8 @@
 #include <iostream>
 
 Boss::Boss(int hp, int baseDmg, int interval_S, int interval_m)
-    : Character(hp), baseDamage(baseDmg), attackInterval(interval_m), SpeicalAttackIterval(interval_S), turnCounter(0), NoramlAttackCount(0) {}
+    : Character(hp), baseDamage(baseDmg), attackInterval(interval_m), SpeicalAttackIterval(interval_S), turnCounter(0), NoramlAttackCount(0) {
+}
 
 void Boss::takeDamage(int dmg) {
     health -= dmg;
