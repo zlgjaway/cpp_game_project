@@ -8,6 +8,8 @@
 #include "Hand.h"
 #include "Orge.h"
 #include "Button.h"
+#include "DamageCalculator.h"
+
 class GameController {
 public:
     GameController();
@@ -18,38 +20,29 @@ private:
     void playerTurn();
     void bossTurn();
     void checkVictoryConditions();
-    Orge boss;
+
     // Helpers
-    void repositionHand();   // operates on 'player'
+    void repositionHand();
     void onSortElement();
     void onSortRank();
     void onPlayClicked();
 
-
     // State
     sf::RenderWindow window;
-    Deck   deck;
+    Deck deck;
     Player player;
-    int    turnCounter{0};
-    bool   gameOver{false};
-    
-    // NEW: UI members
+    Orge boss;
+    int turnCounter{0};
+    bool gameOver{false};
+
+    // UI
     sf::Font uiFont;
     Button btnSortElement;
     Button btnSortRank;
     Button btnPlay;
 
-    
-    // NEW: UI setup + actions (C++11-friendly, using std::bind)
     void initUI();
     void updateButtonLayout();
-
-
-
-
 };
-
-
-
 
 #endif

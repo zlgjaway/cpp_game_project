@@ -43,3 +43,11 @@ bool Card::operator==(const Card& other) const {
 const sf::Sprite& Card::getSprite() const {
     return sprite;
 }
+
+
+void Card::refreshSprite() {
+    std::string filepath = "../assets/Element deck/" +
+                           std::to_string(rank) + "-" +
+                           std::to_string(element) + ".png";
+    loadModel(filepath); // reload the correct image
+}

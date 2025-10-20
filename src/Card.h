@@ -29,6 +29,7 @@ class Card {
     const sf::Sprite& getSprite() const;
     void setSelected(bool s); // optional helper
     bool operator==(const Card& other) const;
+    void refreshSprite();
 };
 
 #endif
