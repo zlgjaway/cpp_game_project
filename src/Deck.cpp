@@ -20,7 +20,7 @@ Deck::~Deck() {
 void Deck::create() {
   int index = 0;
   for (int set = 1; set < 5; set++) { // set fire = 1 / wind = 2 / earth = 3 / water = 4
-    for (int card_rank = 2; card_rank < 15; card_rank++) {
+    for (int card_rank = 2; card_rank < 15; card_rank++) { // 2 - 2 , - 3- 3, 
       deck[index] = Card(card_rank, set); 
 
       // Build the file path dynamically

@@ -16,15 +16,21 @@ void GameController::repositionHand() {
     }
 }
 
-void GameController::onSortElement() {
+
+void GameController::onSortElement() { 
     std::cout << "[UI] Sort by Element\n";
+    player.getHand().logHand("Before Element Sort");
     player.getHand().sortByElement();
+    player.getHand().logHand("After Element Sort");
     repositionHand();
 }
 
-void GameController::onSortRank() {
+
+void GameController::onSortRank() {  
     std::cout << "[UI] Sort by Rank\n";
+    player.getHand().logHand("Before Rank Sort");
     player.getHand().sortByRank();
+    player.getHand().logHand("After Rank Sort");
     repositionHand();
 }
 

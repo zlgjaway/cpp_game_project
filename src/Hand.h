@@ -29,6 +29,8 @@ class Hand {
     void set_card(int index, const Card& card);
     int getSize() const;
     Card& get_card(int index);
+
+    void logHand(const std::string& label) const;
 };
 
 #endif
