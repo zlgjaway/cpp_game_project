@@ -11,10 +11,10 @@
 #include "DamageCalculator.h"
 
 // Seperate Functions
-#include "welcome_display.cpp"
-#include "display_game_status.cpp"
-#include "view_options.cpp"
-#include "select_cards.cpp"
+#include "welcome_display.h"
+#include "display_game_status.h"
+#include "view_options.h"
+#include "select_cards.h"
 
 // TODO: include Boss.h once you create it
 
@@ -35,6 +35,7 @@ int main() {
 
   // === Create and shuffle deck ===
   Deck deck;
+  deck.create();
   deck.shuffle();
 
   // === Draw initial hand ===
@@ -57,7 +58,7 @@ int main() {
     display_game_status(player_hand, user_health, boss.get_boss_health(), boss.get_boss_damage(), boss.get_boss_turn(), current_turn, cards_taken);
 
     // Let player view/switch view of hand (rank/suit/original)
-    view_options(player_hand, player_hand, player_hand_rank, player_hand_elem, user_health, boss.get_boss_health(), boss.get_boss_damage(), boss.get_boss_turn(), current_turn, cards_taken);
+    view_options(player_hand, player_hand_rank, player_hand_elem, user_health, boss.get_boss_health(), boss.get_boss_damage(), boss.get_boss_turn(), current_turn, cards_taken);
 
     // Player selects cards
     vector<int> chosen_cards = select_cards(player_hand);

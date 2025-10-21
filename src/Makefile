@@ -3,12 +3,13 @@ CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra -g
 
 # Target executable
-TARGET = DemonsHand
+TARGET = demonshand
 
 # Source files
 SRCS = \
 		game.cpp \
 		Deck.cpp \
+		Card.cpp \
 		Hand.cpp \
 		Boss.cpp \
 		DamageCalculator.cpp \

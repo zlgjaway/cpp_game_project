@@ -3,6 +3,7 @@
 
 #include "Card.h"
 #include "Deck.h"
+#include <vector>
 
 class Hand {
   private:

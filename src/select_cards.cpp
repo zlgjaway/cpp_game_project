@@ -1,10 +1,4 @@
-#include <iostream>
-#include <sstream>
-#include <vector>
-#include <string>
-#include <algorithm>
-#include "Hand.h"
-using namespace std;
+#include "select_cards.h"
 
 // Ask the user to select 1–5 cards from their hand
 vector<int> select_cards(const Hand& player_hand) {

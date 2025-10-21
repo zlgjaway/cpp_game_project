@@ -1,17 +1,10 @@
-#include <iostream>
-#include <string>
-#include <algorithm>
-#include "Hand.h"
-#include "Boss.h"
-
-#include "display_game_status.cpp"
+#include "view_options.h"
 
 using namespace std;
 
-void view_options(Hand& player_hand, 
-  const Hand& player_hand_original, 
+void view_options(Hand& player_hand,  
   Hand& player_hand_rank, 
-  Hand& player_hand_symbol,
+  Hand& player_hand_elem,
   int user_health, 
   int boss_health, 
   int boss_damage, 
@@ -52,7 +45,7 @@ void view_options(Hand& player_hand,
 
       switch (view_mode) {
         case 1:
-          player_hand = player_hand_original;
+          player_hand = player_hand;
           display_game_status(player_hand, user_health, boss_health, boss_damage, attack_turn, current_turn, cards_taken);
           break;
 
@@ -62,7 +55,7 @@ void view_options(Hand& player_hand,
           break;
 
         case 3:
-          player_hand = player_hand_symbol;
+          player_hand = player_hand_elem;
           display_game_status(player_hand, user_health, boss_health, boss_damage, attack_turn, current_turn, cards_taken);
           break;
 

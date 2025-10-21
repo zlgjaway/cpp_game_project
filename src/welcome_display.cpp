@@ -1,5 +1,5 @@
-#include <iostream>
-#include <string>
+#include "welcome_display.h"
+
 using namespace std;
 
 void welcome_display() {
