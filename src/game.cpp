@@ -57,7 +57,7 @@ int main() {
     // Display current state
     display_game_status(player_hand, user_health, boss.get_boss_health(), boss.get_boss_damage(), boss.get_boss_turn(), current_turn, cards_taken);
 
-    // Let player view/switch view of hand (rank/suit/original)
+    // Let player view/switch view of hand (rank/suit)
     view_options(player_hand, player_hand_rank, player_hand_elem, user_health, boss.get_boss_health(), boss.get_boss_damage(), boss.get_boss_turn(), current_turn, cards_taken);
 
     // Player selects cards
