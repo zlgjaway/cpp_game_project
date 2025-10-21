@@ -26,17 +26,18 @@ void Orge::create() {
 
 void Orge::deal_boss_damage(Player& p) {
 
-        if (turnCounter % attackInterval == 0 && turnCounter >= attackInterval) {
-            if (NoramlAttackCount % SpeicalAttackIterval ==0 && NoramlAttackCount >= SpeicalAttackIterval)
-            {   
-                std::cout << "[Orge] Swings a massive hand for " << baseDamage + 5 << " damage!\n";
-                specialAbility(p);
-            }
-            else{
-                std::cout << "Boss attacks for " << baseDamage << " damage!\n";
-                p.takeDamage(baseDamage);
-                NoramlAttackCount ++;
-            }
+    if (turnCounter % attackInterval == 0 && turnCounter >= attackInterval) 
+    {
+        if (NoramlAttackCount % SpeicalAttackIterval ==0 && NoramlAttackCount >= SpeicalAttackIterval)
+        {   
+            specialAbility(p);
+        }
+        else
+        {
+            std::cout << "Boss attacks for " << baseDamage << " damage!\n";
+            p.takeDamage(baseDamage);
+            NoramlAttackCount ++;
+        }
     }
     turnCounter++;
 }

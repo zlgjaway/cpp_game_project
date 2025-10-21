@@ -144,18 +144,18 @@ int damage_five_cards(const vector<int>& ranks, const vector<int>& elements) {
   unordered_map<int, int> elemFreq;
 
 
-  for (int i = 0 ; i < ranks.size(); i++) {
+  for (size_t i = 0 ; i < ranks.size(); i++) {
       rankFreq[ranks[i]]++;
   }
 
-  for (int i = 0; i < elements.size(); i++) {
+  for (size_t i = 0; i < elements.size(); i++) {
     elemFreq[elements[i]]++;
   }
 
   // Check if all elements are the same
   bool allSameElem = false;
   for (const auto& kv : elemFreq) {
-    int rank = kv.first;
+    //int rank = kv.first;
     int count = kv.second;
 
     if (count == 5) {
