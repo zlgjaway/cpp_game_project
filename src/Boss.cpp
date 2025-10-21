@@ -1,7 +1,7 @@
 #include "Boss.h"
 #include <iostream>
 
-Boss::Boss(int hp, int baseDmg, int interval_S, int interval_m)
+Boss::Boss(int hp, int baseDmg, int interval_S, int interval_m) // boss have 4 atribute
     : Character(hp), baseDamage(baseDmg), attackInterval(interval_m), SpeicalAttackIterval(interval_S), turnCounter(0), NoramlAttackCount(0) {
 }
 
@@ -22,21 +22,11 @@ bool Boss::load_model(const std::string &filepath){
 }
 
 void Boss::deal_boss_damage(Player& p) {
-    
 
-    // Optional: every attackInterval turns, trigger special ability
-    if (turnCounter % attackInterval == 0 && turnCounter >= attackInterval) {
-        if (NoramlAttackCount % SpeicalAttackIterval ==0 && NoramlAttackCount >= SpeicalAttackIterval)
-        {
-            specialAbility(p);
-        }
-        else{
-            std::cout << "Boss attacks for " << baseDamage << " damage!\n";
-            p.takeDamage(baseDamage);
-            NoramlAttackCount ++;
-        }
-    }
-    turnCounter++;
+    std::cout << "Boss attacks for " << baseDamage << " damage!\n";
+    p.takeDamage(baseDamage);
+    NoramlAttackCount ++;
+  
 }
 
 void Boss::specialAbility(Player& p) {

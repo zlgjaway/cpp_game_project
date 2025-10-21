@@ -2,12 +2,13 @@
 #include <algorithm>
 #include <iostream>
 #include <functional>
+#include "GameLogger.h"
 
 GameController::GameController()
     : window(sf::VideoMode(1000, 600), "SFML Card Battle"),
       turnCounter(0),
       gameOver(false) {}
-
+// move card
 void GameController::repositionHand() {
     int x = 60, y = 380;
     for (int i = 0; i < player.getHand().getSize(); ++i) {
@@ -16,7 +17,7 @@ void GameController::repositionHand() {
     }
 }
 
-
+// sort by element
 void GameController::onSortElement() { 
     std::cout << "[UI] Sort by Element\n";
     player.getHand().logHand("Before Element Sort");
@@ -25,7 +26,7 @@ void GameController::onSortElement() {
     repositionHand();
 }
 
-
+// sort by rank
 void GameController::onSortRank() {  
     std::cout << "[UI] Sort by Rank\n";
     player.getHand().logHand("Before Rank Sort");
@@ -43,20 +44,32 @@ void GameController::onPlayClicked() {
         checkVictoryConditions();
     }
 }
-
+// game loop start
 void GameController::startGame() {
+    
+    
+    std::cout << "Welcome to the Card Battle Game!\n";
+    showStats();
+
     // Show game menu to select boss
     GameMenu menu(window);
     int bossChoice = menu.show();
     if (bossChoice == -1) return;
 
-    switch (bossChoice) {
-        case 1: boss = Orge(); break;
-        //case 2: boss = Dragon(); break;
-        //case 3: boss = Demon(); break;
-        default: boss = Orge(); break;
+    // Clean up previous boss if any
+    if (boss) {
+        delete boss;
+        boss = nullptr;
     }
 
+    // Create new boss based on choice
+    switch (bossChoice) {
+        case 1: boss = new Orge(); break;
+        case 2: boss = new Phoenix(); break;
+        case 3: boss = new Leviathan(); break;
+        default: boss = new Orge(); break;
+    }
+    // create button 
     initUI();
 
     deck.create();
@@ -66,13 +79,13 @@ void GameController::startGame() {
     deck.shuffle();
     std::cout << "[GameController] Deck shuffled.\n";
 
-    boss.create();
+    boss->create();
     std::cout << "[GameController] Filling player's hand...\n";
     player.getHand().fillFromDeck(deck);
     std::cout << "[GameController] Hand filled.\n";
 
     repositionHand();
-
+    // mouse control
     while (window.isOpen() && !gameOver) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -127,24 +140,24 @@ void GameController::startGame() {
             }
         }
 
-       window.clear(sf::Color(25, 25, 112)); // Midnight Blue
+        window.clear(sf::Color(25, 25, 112)); // Midnight Blue
 
         for (int i = 0; i < player.getHand().getSize(); ++i) {
             window.draw(player.getHand().get_card(i).getSprite());
         }
 
-        window.draw(boss.getSprite());
+        window.draw(boss->getSprite());
 
         btnSortElement.draw(window);
         btnSortRank.draw(window);
         btnPlay.draw(window);
-
+        // adding heath point 
         sf::Text bossHealthText;
         bossHealthText.setFont(uiFont);
         bossHealthText.setCharacterSize(24);
         bossHealthText.setFillColor(sf::Color::Red);
         bossHealthText.setPosition(20, 20);
-        bossHealthText.setString("Boss HP: " + std::to_string(boss.getHealth()));
+        bossHealthText.setString("Boss HP: " + std::to_string(boss->getHealth()));
         
         sf::Text playerHealthText;
         playerHealthText.setFont(uiFont);
@@ -175,7 +188,6 @@ void GameController::playerTurn() {
             card.selected = false;
         }
     }
-
     if (selectedIndices.empty()) {
         std::cout << "[Turn] No cards selected. Select cards then press Enter.\n";
         return;
@@ -204,7 +216,7 @@ void GameController::playerTurn() {
               << selectedIndices.size() << " card(s).\n";
 
     int damage = calculate_damage(player.getHand(), selectedIndices);
-    boss.takeDamage(damage);
+    boss->takeDamage(damage);
 
     try {
         player.getHand().replace(selectedIndices.data(),
@@ -224,15 +236,19 @@ void GameController::playerTurn() {
 }
 
 void GameController::bossTurn() {
-    boss.deal_boss_damage(player);
+    boss->deal_boss_damage(player);
 }
 
 void GameController::checkVictoryConditions() {
-    if (boss.getHealth() <= 0) {
+    if (boss->getHealth() <= 0) {
         std::cout << "You win!\n";
+        logEvent("Player defeated the boss.");
+        updateStats(true);
         gameOver = true;
     } else if (player.getHealth() <= 0) {
         std::cout << "You lose!\n";
+        logEvent("Player was defeated by the boss.");
+        updateStats(false);
         gameOver = true;
     }
 }
@@ -259,7 +275,7 @@ void GameController::initUI() {
     }
 
     updateButtonLayout();
-
+    // button function
     btnSortElement.onClick = std::bind(&GameController::onSortElement, this);
     btnSortRank.onClick = std::bind(&GameController::onSortRank, this);
     btnPlay.onClick = std::bind(&GameController::onPlayClicked, this);
@@ -267,4 +283,9 @@ void GameController::initUI() {
     btnSortElement.box.setFillColor(sf::Color(70, 130, 180));
     btnSortRank.box.setFillColor(sf::Color(46, 139, 87));
     btnPlay.box.setFillColor(sf::Color(218, 165, 32));
+}
+
+GameController::~GameController() {
+    delete boss;
+    boss = nullptr;
 }

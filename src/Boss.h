@@ -7,28 +7,31 @@
 #include <SFML/Graphics.hpp>
 
 class Boss : public Character {
+public:
+    Boss(int hp, int baseDmg, int interval_S, int interval_m);
+
+    virtual ~Boss() = default;
+
+    virtual void create();  // Can be overridden for sprite setup
+    virtual void specialAbility(Player& p);  // Override for custom abilities
+    virtual void deal_boss_damage(Player& p); // overide meachinc for every boss
+    void takeDamage(int dmg);
+    bool load_model(const std::string& filepath);
+    const sf::Sprite& getSprite() const { return sprite; }
+    void setPosition(float x, float y);
+    sf::Vector2f getPosition() const;
+
+    int getHealth() const { return health; }
+
 protected:
     int baseDamage;
     int attackInterval;
     int SpeicalAttackIterval;
     int turnCounter;
     int NoramlAttackCount;
+
     sf::Texture texture;
     sf::Sprite sprite;
-
-public:
-    Boss(int hp = 100, int baseDmg = 10, int interval_S = 2, int interval_m = 3);  // s for spiecal attack and m for normal attack
-    virtual ~Boss() = default;
-
-    virtual void takeDamage(int dmg) override;
-    virtual void deal_boss_damage(Player& p);
-    virtual void specialAbility(Player& p);
-
-    virtual void create(); // New virtual method
-    bool load_model(const std::string& filepath);
-    const sf::Sprite& getSprite() const { return sprite; }
-    void setPosition(float x, float y);
-    sf::Vector2f getPosition() const;
 };
 
 #endif

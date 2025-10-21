@@ -5,6 +5,7 @@ class Character {
 protected:
     int health;
 public:
+    // inital character
     Character(int hp);
     virtual ~Character();
 
