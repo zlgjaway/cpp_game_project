@@ -2,6 +2,9 @@
 #include "Deck.h"
 
 #include <algorithm> // for sort()
+#include <vector>
+
+using namespace std;
 
 Hand::Hand() {
   hand_size = 7;
@@ -23,7 +26,7 @@ void Hand::fillFromDeck(Deck &deck) {
 }
 
 // Find which slots are empty, and replace the slots
-void Hand::replace(int* chosen_cards, int chosen_size, Deck &deck) {
+void Hand::replace(const vector<int>& chosen_cards, int chosen_size, Deck &deck) {
   for (int i = 0; i < chosen_size; i++) {
     // Find the index of card chosen (in the hand)
     int index = chosen_cards[i];
@@ -52,3 +55,4 @@ Card Hand::get_card(int index) const {
 void Hand::set_card(int index, const Card& card) {
   hand[index] = card;
 }
+

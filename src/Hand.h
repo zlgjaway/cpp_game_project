@@ -19,7 +19,7 @@ class Hand {
     // Fill the Hand
     void fillFromDeck(Deck &deck);
     // Find which slots are empty, and replace the slots
-    void replace(int* chosen_cards, int chosen_size, Deck &deck);
+    void replace(const std::vector<int>& chosen_cards, int chosen_size, Deck &deck);
 
     void sortByRank();
 
@@ -27,6 +27,22 @@ class Hand {
 
     Card get_card(int index) const;
     void set_card(int index, const Card& card);
+
+    Card& operator[](size_t index) {
+      return hand[index];
+    }
+
+    const Card& operator[](size_t index) const {
+      return hand[index];
+    }
+
+    int get_hand_size() const {
+      return hand_size;
+    }
+
+    Card* get_cards() const {
+        return hand;
+    }
 };
 
 #endif
