@@ -1,0 +1,73 @@
+Memory Leak Test Evidence Log
+================================
+
+Valgrind Output Summary:
+------------------------
+==2925== LEAK SUMMARY:
+==2925==    definitely lost: 1,049 bytes in 3 blocks
+==2925==    indirectly lost: 106,400 bytes in 475 blocks
+==2925==      possibly lost: 118,944 bytes in 531 blocks
+==2925==    still reachable: 253,005 bytes in 3,497 blocks
+==2925==         suppressed: 0 bytes in 0 blocks
+==2925== Reachable blocks (those to which a pointer was found) are not shown.
+==2925== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==2925== For lists of detected and suppressed errors, rerun with: -s
+==2925== ERROR SUMMARY: 5 errors from 5 contexts (suppressed: 0 from 0)
+
+==2939== LEAK SUMMARY:
+==2939==    definitely lost: 1,049 bytes in 3 blocks
+==2939==    indirectly lost: 106,400 bytes in 475 blocks
+==2939==      possibly lost: 118,944 bytes in 531 blocks
+==2939==    still reachable: 253,005 bytes in 3,497 blocks
+==2939==         suppressed: 0 bytes in 0 blocks
+==2939== For lists of detected and suppressed errors, rerun with: -s
+==2939== ERROR SUMMARY: 5 errors from 5 contexts (suppressed: 0 from 0)
+
+==2954==
+==2954== 105,280 bytes in 470 blocks are possibly lost in loss record 2,578 of 2,578
+==2954==    at 0x484D953: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2954==    by 0x5853C0E: ??? (in /usr/lib/x86_64-linux-gnu/libGLX_mesa.so.0.0.0)
+==2954==    by 0x5854F1F: ??? (in /usr/lib/x86_64-linux-gnu/libGLX_mesa.so.0.0.0)
+==2954==    by 0x58551E6: ??? (in /usr/lib/x86_64-linux-gnu/libGLX_mesa.so.0.0.0)
+==2954==    by 0x584FE98: ??? (in /usr/lib/x86_64-linux-gnu/libGLX_mesa.so.0.0.0)
+==2954==    by 0x5854718: ??? (in /usr/lib/x86_64-linux-gnu/libGLX_mesa.so.0.0.0)
+==2954==    by 0x585578C: ??? (in /usr/lib/x86_64-linux-gnu/libGLX_mesa.so.0.0.0)
+==2954==    by 0x5851E14: ??? (in /usr/lib/x86_64-linux-gnu/libGLX_mesa.so.0.0.0)
+==2954==    by 0x48CDF0D: ??? (in /usr/lib/x86_64-linux-gnu/libsfml-window.so.2.6.1)
+==2954==    by 0x48CE2C2: ??? (in /usr/lib/x86_64-linux-gnu/libsfml-window.so.2.6.1)
+==2954==    by 0x48CFD12: ??? (in /usr/lib/x86_64-linux-gnu/libsfml-window.so.2.6.1)
+==2954==    by 0x48D2C57: ??? (in /usr/lib/x86_64-linux-gnu/libsfml-window.so.2.6.1)
+
+==2954== LEAK SUMMARY:
+==2954==    definitely lost: 1,049 bytes in 3 blocks
+==2954==    indirectly lost: 106,400 bytes in 475 blocks
+==2954==      possibly lost: 118,944 bytes in 531 blocks
+==2954==    still reachable: 253,005 bytes in 3,497 blocks
+==2954==         suppressed: 0 bytes in 0 blocks
+==2954== For lists of detected and suppressed errors, rerun with: -s
+==2954== ERROR SUMMARY: 5 errors from 5 contexts (suppressed: 0 from 0)
+
+Relevant Code Snippet:
+----------------------
+GameController::~GameController() {
+    delete boss;
+    boss = nullptr;
+}
+
+switch (bossChoice) {
+    case 1: boss = new Orge(); break;
+    case 2: boss = new Phoenix(); break;
+    case 3: boss = new Leviathan(); break;
+    default: boss = new Orge(); break;
+}
+
+The leak:
+105,280 bytes in 470 blocks are possibly lost
+
+is coming from:
+/usr/lib/x86_64-linux-gnu/libGLX_mesa.so.0.0.0
+
+and indirectly from:
+libsfml-window.so
+
+This means the leak is inside SFML or the graphics driver (Mesa), not your own code. These are "possibly lost" blocks, which Valgrind flags when it can't determine if memory is still accessible — often due to complex internal structures in libraries like SFML or OpenGL.
