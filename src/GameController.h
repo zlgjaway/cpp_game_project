@@ -14,7 +14,7 @@
 class GameController {
 public:
     GameController();
-    ~GameController();  // ✅ Add destructor to clean up boss
+    ~GameController();  // Add destructor to clean up boss
     void startGame();
 
 private:

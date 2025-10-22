@@ -1,1 +1,2 @@
 Player defeated the boss.
+Player was defeated by the boss.
